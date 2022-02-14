@@ -2824,10 +2824,14 @@ Version:1.0
 	overflow: hidden;
 	position: relative;
 	margin-top: 30px;
-	border: 1px solid #eee;
 	padding: 10px;
 }
 .shop-home-list .single-list .list-image{
+	max-width: 115px;
+	max-height: 140px;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
 	position:relative;
 }
 .shop-home-list .single-list .list-image.overlay:before{
