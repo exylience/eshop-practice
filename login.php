@@ -184,7 +184,7 @@
 									<h3>Sign in to get access to your account</h3>
 								</div>
 
-								<form class="form" method="post" action="#">
+								<form class="form" method="post" action="vendor/auth/login.php">
 									<div class="row">
 										<div class="col-lg-6 col-12">
 											<div class="form-group">
