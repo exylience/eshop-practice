@@ -1,3 +1,11 @@
+<?php
+session_start();
+
+if (isset($_SESSION['user'])) {
+    header('Location: /index.php');
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -199,6 +207,10 @@
 												<input name="password" type="password" required>
 											</div>	
 										</div>
+
+                                        <div class="col-12">
+                                            <p class="mt-1 mb-3">Don't have an account? <a class="register-link" href="register.php">Register now!</a></p>
+                                        </div>
 
 										<div class="col-12">
 											<div class="form-group button">

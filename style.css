@@ -5045,3 +5045,7 @@ Version:1.0
 	margin-top: 5px;
 	font-style: italic;
 }
+
+.register-link {
+	color: #f6931d !important;
+}
