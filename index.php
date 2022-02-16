@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -66,8 +70,18 @@
 					<div class="col-lg-7 col-md-12 col-12">
 						<div class="right-content">
 							<ul class="list-main">
-								<li><i class="ti-user"></i> <a href="#">My account</a></li>
-								<li><i class="ti-power-off"></i><a href="login.php#">Login</a></li>
+                                <?php
+                                    if (isset($_SESSION['user'])) {
+                                        ?>
+                                            <li><i class="ti-user"></i> <a href="#">My account</a></li>
+                                            <li><i class="ti-power-off"></i><a href="vendor/auth/logout.php">Logout</a></li>
+                                        <?php
+                                    } else {
+                                        ?>
+                                            <li><i class="ti-power-off"></i><a href="login.php">Login</a></li>
+                                        <?php
+                                    }
+                                ?>
 							</ul>
 						</div>
 					</div>
