@@ -5017,3 +5017,31 @@ Version:1.0
 	display: flex;
 	align-items: center;
 }
+
+.msg {
+	position: fixed;
+	top: 150px;
+	right: 0;
+	width: 250px;
+	padding: 30px;
+}
+
+.msg-text {
+	text-align: center;
+	color: #fff;
+}
+
+.msg.success {
+	background: #0ebd3b;
+}
+
+.msg.error {
+	background: #c0120c;
+}
+
+.form-error {
+	color: #c0120c;
+	font-size: 14px;
+	margin-top: 5px;
+	font-style: italic;
+}
