@@ -21,7 +21,7 @@ if (mysqli_num_rows($response) > 0) {
         'address' => $user['address'],
         'additionalAddress' => $user['additional_address'],
         'postIndex' => $user['post_index'],
-        'group' => $user['user_group']
+        'group' => (int)$user['user_group']
     ];
 
     header('Location: /index.php');
