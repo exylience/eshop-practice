@@ -28,7 +28,8 @@ if (mysqli_num_rows($response) === 0) {
         'country' => $result['country'],
         'address' => $result['address'],
         'additionalAddress' => $result['additional_address'],
-        'postIndex' => $result['post_index']
+        'postIndex' => $result['post_index'],
+        'group' => (int)$result['user_group']
     ];
 
     unset($_SESSION['message']);

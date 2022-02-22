@@ -1,3 +1,14 @@
+<?php
+session_start();
+
+if (
+    !isset($_SESSION['user']) ||
+    $_SESSION['user']['group'] !== 2
+) {
+    header('Location: /index.php');
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -66,8 +77,9 @@
 					<div class="col-lg-7 col-md-12 col-12">
 						<div class="right-content">
 							<ul class="list-main">
+                                <li><i class="ti-bolt"></i> <a href="index.php">Admin panel</a></li>
 								<li><i class="ti-user"></i> <a href="#">My account</a></li>
-								<li><i class="ti-power-off"></i><a href="login.html#">Logout</a></li>
+								<li><i class="ti-power-off"></i><a href="../../vendor/auth/logout.php">Logout</a></li>
 							</ul>
 						</div>
 					</div>
@@ -80,7 +92,7 @@
 				<div class="row">
 					<div class="col-lg-2 col-md-2 col-12">
 						<div class="logo">
-							<a href="index.html"><img src="../../images/logo.png" alt="logo"></a>
+							<a href="index.php"><img src="../../images/logo.png" alt="logo"></a>
 						</div>
 
 						<div class="mobile-nav"></div>
@@ -106,7 +118,7 @@
 										<div class="nav-inner">
 											<ul class="nav main-menu menu navbar-nav">
 												<li><a href="../../index.php">Home</a></li>
-												<li class="active"><a href="index.html">Categories</a></li>
+												<li class="active"><a href="index.php">Categories</a></li>
 												<li><a href="#">Products</a></li>
 											</ul>
 										</div>
@@ -128,12 +140,12 @@
 						<ul class="bread-list">
 							<li><a href="../../index.php">Home<i class="ti-arrow-right"></i></a></li>
 							<li><a href="#">Admin Panel<i class="ti-arrow-right"></i></a></li>
-							<li class="active"><a href="index.html">Categories</a></li>
+							<li class="active"><a href="index.php">Categories</a></li>
 						</ul>
 					</div>
 
 					<div class="navbar-links">
-						<a href="add.html"><i class="ti-plus mr-2"></i> Create Category</a>
+						<a href="add.php"><i class="ti-plus mr-2"></i> Create Category</a>
 					</div>
 				</div>
 			</div>
@@ -153,45 +165,53 @@
 						</thead>
 
 						<tbody>
-							<tr>
-								<td class="product-des" data-title="Name">
-									<p class="product-name"><a href="#">Women Dress</a></p>
-								</td>
-								<td class="action" data-title="Actions">
-									<a class="mr-2" href="#"><i class="ti-pencil remove-icon"></i></a>
-									<a href="#"><i class="ti-trash remove-icon"></i></a>
-								</td>
-							</tr>
+                            <tr>
+                                <td class="product-des" data-title="Name">
+                                    <p class="product-name"><a href="#">Women Dress</a></p>
+                                </td>
+                                <td class="action" data-title="Actions">
+                                    <a class="mr-2" href="#"><i class="ti-pencil remove-icon"></i></a>
+                                    <a href="#">
+                                        <i class="ti-trash remove-icon"></i>
+                                    </a>
+                                </td>
+                            </tr>
 
-							<tr>
-								<td class="product-des" data-title="Name">
-									<p class="product-name"><a href="#">Women Dress</a></p>
-								</td>
-								<td class="action" data-title="Actions">
-									<a class="mr-2" href="#"><i class="ti-pencil remove-icon"></i></a>
-									<a href="#"><i class="ti-trash remove-icon"></i></a>
-								</td>
-							</tr>
+                            <tr>
+                                <td class="product-des" data-title="Name">
+                                    <p class="product-name"><a href="#">Women Dress</a></p>
+                                </td>
+                                <td class="action" data-title="Actions">
+                                    <a class="mr-2" href="#"><i class="ti-pencil remove-icon"></i></a>
+                                    <a href="#">
+                                        <i class="ti-trash remove-icon"></i>
+                                    </a>
+                                </td>
+                            </tr>
 
-							<tr>
-								<td class="product-des" data-title="Name">
-									<p class="product-name"><a href="#">Women Dress</a></p>
-								</td>
-								<td class="action" data-title="Actions">
-									<a class="mr-2" href="#"><i class="ti-pencil remove-icon"></i></a>
-									<a href="#"><i class="ti-trash remove-icon"></i></a>
-								</td>
-							</tr>
+                            <tr>
+                                <td class="product-des" data-title="Name">
+                                    <p class="product-name"><a href="#">Women Dress</a></p>
+                                </td>
+                                <td class="action" data-title="Actions">
+                                    <a class="mr-2" href="#"><i class="ti-pencil remove-icon"></i></a>
+                                    <a href="#">
+                                        <i class="ti-trash remove-icon"></i>
+                                    </a>
+                                </td>
+                            </tr>
 
-							<tr>
-								<td class="product-des" data-title="Name">
-									<p class="product-name"><a href="#">Women Dress</a></p>
-								</td>
-								<td class="action" data-title="Actions">
-									<a class="mr-2" href="#"><i class="ti-pencil remove-icon"></i></a>
-									<a href="#"><i class="ti-trash remove-icon"></i></a>
-								</td>
-							</tr>
+                            <tr>
+                                <td class="product-des" data-title="Name">
+                                    <p class="product-name"><a href="#">Women Dress</a></p>
+                                </td>
+                                <td class="action" data-title="Actions">
+                                    <a class="mr-2" href="#"><i class="ti-pencil remove-icon"></i></a>
+                                    <a href="#">
+                                        <i class="ti-trash remove-icon"></i>
+                                    </a>
+                                </td>
+                            </tr>
 						</tbody>
 					</table>
 				</div>

@@ -71,8 +71,16 @@ session_start();
 						<div class="right-content">
 							<ul class="list-main">
                                 <?php
-                                    if ($_SESSION['user']) {
+                                    if (isset($_SESSION['user'])) {
                                         ?>
+                                            <?php
+                                                if ($_SESSION['user']['group'] === 2) {
+                                                    ?>
+                                                        <li><i class="ti-bolt"></i> <a href="admin/categories/index.php">Admin panel</a></li>
+                                                    <?php
+                                                }
+                                            ?>
+
                                             <li><i class="ti-user"></i> <a href="#">My account</a></li>
                                             <li><i class="ti-power-off"></i><a href="vendor/auth/logout.php">Logout</a></li>
                                         <?php
