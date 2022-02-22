@@ -1,3 +1,7 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -66,8 +70,18 @@
 					<div class="col-lg-7 col-md-12 col-12">
 						<div class="right-content">
 							<ul class="list-main">
-								<li><i class="ti-user"></i> <a href="#">My account</a></li>
-								<li><i class="ti-power-off"></i><a href="login.html#">Login</a></li>
+                                <?php
+                                    if ($_SESSION['user']) {
+                                        ?>
+                                            <li><i class="ti-user"></i> <a href="#">My account</a></li>
+                                            <li><i class="ti-power-off"></i><a href="vendor/auth/logout.php">Logout</a></li>
+                                        <?php
+                                    } else {
+                                        ?>
+                                            <li><i class="ti-power-off"></i><a href="login.php">Login</a></li>
+                                        <?php
+                                    }
+                                ?>
 							</ul>
 						</div>
 					</div>
@@ -80,7 +94,7 @@
 				<div class="row">
 					<div class="col-lg-2 col-md-2 col-12">
 						<div class="logo">
-							<a href="index.html"><img src="images/logo.png" alt="logo"></a>
+							<a href="index.php"><img src="images/logo.png" alt="logo"></a>
 						</div>
 
 						<div class="search-top">
@@ -1921,7 +1935,7 @@
 					<div class="col-lg-5 col-md-6 col-12">
 						<div class="single-footer about">
 							<div class="logo">
-								<a href="index.html"><img src="images/logo2.png" alt="#"></a>
+								<a href="index.php"><img src="images/logo2.png" alt="#"></a>
 							</div>
 							<p class="text">Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue,  magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.</p>
 							<p class="call">Got Question? Call us 24/7<span><a href="tel:88005553535">88005553535</a></span></p>

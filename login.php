@@ -1,3 +1,11 @@
+<?php
+session_start();
+
+if (isset($_SESSION['user'])) {
+    header('Location: /index.php');
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,6 +58,16 @@
 		</div>
 	</div>
 
+    <?php
+        if (isset($_SESSION['message'])) {
+            ?>
+                <div class="message <?= $_SESSION['message']['type'] ?>">
+                    <p class="message-text"><?= $_SESSION['message']['text'] ?></p>
+                </div>
+            <?php
+        }
+    ?>
+
 	<header class="header shop">
 		<div class="topbar">
 			<div class="container">
@@ -65,8 +83,7 @@
 					<div class="col-lg-7 col-md-12 col-12">
 						<div class="right-content">
 							<ul class="list-main">
-								<li><i class="ti-user"></i> <a href="#">My account</a></li>
-								<li><i class="ti-power-off"></i><a href="login.html#">Login</a></li>
+								<li><i class="ti-power-off"></i><a href="login.php">Login</a></li>
 							</ul>
 						</div>
 					</div>
@@ -79,7 +96,7 @@
 				<div class="row">
 					<div class="col-lg-2 col-md-2 col-12">
 						<div class="logo">
-							<a href="index.html"><img src="images/logo.png" alt="logo"></a>
+							<a href="index.php"><img src="images/logo.png" alt="logo"></a>
 						</div>
 
 						<div class="search-top">
@@ -164,8 +181,8 @@
 				<div class="col-12">
 					<div class="bread-inner">
 						<ul class="bread-list">
-							<li><a href="index.html">Home<i class="ti-arrow-right"></i></a></li>
-							<li class="active"><a href="login.html">Sign in</a></li>
+							<li><a href="index.php">Home<i class="ti-arrow-right"></i></a></li>
+							<li class="active"><a href="login.php">Sign in</a></li>
 						</ul>
 					</div>
 				</div>
@@ -184,7 +201,7 @@
 									<h3>Sign in to get access to your account</h3>
 								</div>
 
-								<form class="form" method="post" action="#">
+								<form class="form" method="post" action="vendor/auth/login.php">
 									<div class="row">
 										<div class="col-lg-6 col-12">
 											<div class="form-group">
@@ -205,6 +222,10 @@
 												<button type="submit" class="btn">Sign in</button>
 											</div>
 										</div>
+
+                                        <div class="col-12">
+                                            <p class="register-link mt-2">Don't have an account yet? <a href="register.php">Register now</a></p>
+                                        </div>
 									</div>
 								</form>
 							</div>
@@ -240,7 +261,7 @@
 					<div class="col-lg-5 col-md-6 col-12">
 						<div class="single-footer about">
 							<div class="logo">
-								<a href="index.html"><img src="images/logo2.png" alt="#"></a>
+								<a href="index.php"><img src="images/logo2.png" alt="#"></a>
 							</div>
 							<p class="text">Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue,  magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.</p>
 							<p class="call">Got Question? Call us 24/7<span><a href="tel:88005553535">88005553535</a></span></p>

@@ -1,3 +1,11 @@
+<?php
+session_start();
+
+if (isset($_SESSION['user'])) {
+    header('Location: /index.php');
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,6 +58,16 @@
 		</div>
 	</div>
 
+    <?php
+        if (isset($_SESSION['message'])) {
+            ?>
+                <div class="message <?= $_SESSION['message']['type'] ?>">
+                    <p class="message-text"><?= $_SESSION['message']['text'] ?></p>
+                </div>
+            <?php
+        }
+    ?>
+
 	<header class="header shop">
 		<div class="topbar">
 			<div class="container">
@@ -65,8 +83,7 @@
 					<div class="col-lg-7 col-md-12 col-12">
 						<div class="right-content">
 							<ul class="list-main">
-								<li><i class="ti-user"></i> <a href="#">My account</a></li>
-								<li><i class="ti-power-off"></i><a href="login.html#">Login</a></li>
+								<li><i class="ti-power-off"></i><a href="login.php">Login</a></li>
 							</ul>
 						</div>
 					</div>
@@ -79,7 +96,7 @@
 				<div class="row">
 					<div class="col-lg-2 col-md-2 col-12">
 						<div class="logo">
-							<a href="index.html"><img src="images/logo.png" alt="logo"></a>
+							<a href="index.php"><img src="images/logo.png" alt="logo"></a>
 						</div>
 
 						<div class="search-top">
@@ -164,8 +181,8 @@
 				<div class="col-12">
 					<div class="bread-inner">
 						<ul class="bread-list">
-							<li><a href="index.html">Home<i class="ti-arrow-right"></i></a></li>
-							<li class="active"><a href="register.html">Register</a></li>
+							<li><a href="index.php">Home<i class="ti-arrow-right"></i></a></li>
+							<li class="active"><a href="register.php">Register</a></li>
 						</ul>
 					</div>
 				</div>
@@ -184,7 +201,7 @@
 									<h3>Register</h3>
 								</div>
 
-								<form class="form" method="post" action="#">
+								<form class="form" method="post" action="vendor/auth/register.php">
 									<div class="row">
 										<div class="col-lg-6 col-12">
 											<div class="form-group">
@@ -218,6 +235,14 @@
 											<div class="form-group">
 												<label>Password<span>*</span></label>
 												<input name="password" type="password" required>
+
+                                                <?php
+                                                    if (isset($_SESSION['validation']['password'])) {
+                                                        ?>
+                                                            <p class="form-error mt-1"><?= $_SESSION['validation']['password'] ?></p>
+                                                        <?php
+                                                    }
+                                                ?>
 											</div>	
 										</div>
 
@@ -225,6 +250,14 @@
 											<div class="form-group">
 												<label>Confirm Your Password<span>*</span></label>
 												<input name="password_confirmation" type="password" required>
+
+                                                <?php
+                                                    if (isset($_SESSION['validation']['passwordConfirmation'])) {
+                                                        ?>
+                                                            <p class="form-error mt-1"><?= $_SESSION['validation']['passwordConfirmation'] ?></p>
+                                                        <?php
+                                                    }
+                                                ?>
 											</div>
 										</div>
 
@@ -542,7 +575,7 @@
 					<div class="col-lg-5 col-md-6 col-12">
 						<div class="single-footer about">
 							<div class="logo">
-								<a href="index.html"><img src="images/logo2.png" alt="#"></a>
+								<a href="index.php"><img src="images/logo2.png" alt="#"></a>
 							</div>
 							<p class="text">Praesent dapibus, neque id cursus ucibus, tortor neque egestas augue,  magna eros eu erat. Aliquam erat volutpat. Nam dui mi, tincidunt quis, accumsan porttitor, facilisis luctus, metus.</p>
 							<p class="call">Got Question? Call us 24/7<span><a href="tel:88005553535">88005553535</a></span></p>
