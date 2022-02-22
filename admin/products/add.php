@@ -1,3 +1,20 @@
+<?php
+session_start();
+
+require_once '../../includes/db.php';
+
+if (
+    !isset($_SESSION['user']) ||
+    $_SESSION['user']['group'] !== 2
+) {
+    header('Location: /index.php');
+}
+
+$query = "SELECT * FROM `categories`";
+$response = mysqli_query($db, $query);
+$categories = mysqli_fetch_all($response, MYSQLI_ASSOC);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -80,7 +97,7 @@
 				<div class="row">
 					<div class="col-lg-2 col-md-2 col-12">
 						<div class="logo">
-							<a href="index.html"><img src="../../images/logo.png" alt="logo"></a>
+							<a href="index.php"><img src="../../images/logo.png" alt="logo"></a>
 						</div>
 
 						<div class="mobile-nav"></div>
@@ -106,8 +123,8 @@
 										<div class="nav-inner">
 											<ul class="nav main-menu menu navbar-nav">
 												<li><a href="../../index.php">Home</a></li>
-												<li><a href="../categories/index.php">Categories</a></li>
-												<li class="active"><a href="index.html">Products</a></li>
+												<li><a href="index.php">Categories</a></li>
+												<li class="active"><a href="index.php">Products</a></li>
 											</ul>
 										</div>
 									</div>
@@ -128,87 +145,85 @@
 						<ul class="bread-list">
 							<li><a href="../../index.php">Home<i class="ti-arrow-right"></i></a></li>
 							<li><a href="#">Admin Panel<i class="ti-arrow-right"></i></a></li>
-							<li class="active"><a href="index.html">Products</a></li>
+							<li><a href="index.php">Products<i class="ti-arrow-right"></i></a></li>
+							<li class="active"><a href="add.php">Create Product</a></li>
 						</ul>
 					</div>
 
 					<div class="navbar-links">
-						<a href="add.html"><i class="ti-plus mr-2"></i> Create Product</a>
+						<a href="add.php"><i class="ti-plus mr-2"></i> Create Product</a>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div class="shopping-cart section">
+	<section id="contact-us" class="contact-us section">
 		<div class="container">
-			<div class="row">
-				<div class="col-12">
-					<table class="table shopping-summery">
-						<thead>
-							<tr class="main-hading">
-								<th>PRODUCT</th>
-								<th>NAME</th>
-								<th class="text-center">PRICE</th>
-								<th class="text-center">CATEGORY</th>
-								<th class="text-center">ACTIONS</th>
-							</tr>
-						</thead>
+			<div class="contact-head">
+				<div class="row justify-content-center">
+					<div class="col-lg-8 col-12">
+						<div class="form-main">
+							<form class="form" method="post" action="../../vendor/products/add.php" enctype="multipart/form-data">
+								<div class="row">
+									<div class="col-lg-12 col-12">
+										<div class="form-group">
+											<label>Product Name<span>*</span></label>
+											<input name="title" type="text" required>
+										</div>
+									</div>
 
-						<tbody>
-							<tr>
-								<td class="image" data-title="No"><img src="https://via.placeholder.com/100x100" alt="#"></td>
-								<td class="product-des" data-title="Description">
-									<p class="product-name"><a href="#">Women Dress</a></p>
-									<p class="product-des">Maboriosam in a tonto nesciung eget  distingy magndapibus.</p>
-								</td>
-								<td class="price" data-title="Price"><span>$110.00</span></td>
-								<td class="qty" data-title="Category">
-									<a class="btn-link">Shoes</a>
-								</td>
-								<td class="action" data-title="Actions">
-									<a class="mr-2" href="#"><i class="ti-pencil remove-icon"></i></a>
-									<a href="#"><i class="ti-trash remove-icon"></i></a>
-								</td>
-							</tr>
+									<div class="col-lg-12 col-12">
+										<div class="form-group file">
+											<label>Product Image</label>
+											<input name="image" type="file">
+										</div>
+									</div>
 
-							<tr>
-								<td class="image" data-title="No"><img src="https://via.placeholder.com/100x100" alt="#"></td>
-								<td class="product-des" data-title="Description">
-									<p class="product-name"><a href="#">Women Dress</a></p>
-									<p class="product-des">Maboriosam in a tonto nesciung eget  distingy magndapibus.</p>
-								</td>
-								<td class="price" data-title="Price"><span>$110.00</span></td>
-								<td class="qty" data-title="Category">
-									<a class="btn-link">Shoes</a>
-								</td>
-								<td class="action" data-title="Remove">
-									<a class="mr-2" href="#"><i class="ti-pencil remove-icon"></i></a>
-									<a href="#"><i class="ti-trash remove-icon"></i></a>
-								</td>
-							</tr>
+									<div class="col-12">
+										<div class="form-group">
+											<label>Price<span>*</span></label>
+											<input name="price" type="number" required>
+										</div>
+									</div>
 
-							<tr>
-								<td class="image" data-title="No"><img src="https://via.placeholder.com/100x100" alt="#"></td>
-								<td class="product-des" data-title="Description">
-									<p class="product-name"><a href="#">Women Dress</a></p>
-									<p class="product-des">Maboriosam in a tonto nesciung eget  distingy magndapibus.</p>
-								</td>
-								<td class="price" data-title="Price"><span>$110.00</span></td>
-								<td class="qty" data-title="Category">
-									<a class="btn-link">Shoes</a>
-								</td>
-								<td class="action" data-title="Remove">
-									<a class="mr-2" href="#"><i class="ti-pencil remove-icon"></i></a>
-									<a href="#"><i class="ti-trash remove-icon"></i></a>
-								</td>
-							</tr>
-						</tbody>
-					</table>
+									<div class="col-12">
+										<div class="form-group">
+											<label>Description<span>*</span></label>
+											<textarea name="description"></textarea>
+										</div>
+									</div>
+
+									<div class="col-12">
+										<div class="form-group">
+											<label>Category<span>*</span></label>
+											<select name="category_id" id="category">
+                                                <?php
+                                                    foreach ($categories as $category) {
+                                                        ?>
+                                                            <option value="<?= $category['id'] ?>">
+                                                                <?= $category['name'] ?>
+                                                            </option>
+                                                        <?php
+                                                    }
+                                                ?>
+											</select>
+										</div>
+									</div>
+
+									<div class="col-12">
+										<div class="form-group button">
+											<button type="submit" class="btn">Create</button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	</section>
 
 	<footer class="footer">
 		<div class="copyright">
