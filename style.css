@@ -5048,3 +5048,9 @@ Version:1.0
 .register-link > a {
 	color: #F7941D;
 }
+
+.form-group.file > input {
+	height: 48px !important;
+	padding: 10px 20px !important;
+	line-height: 24px !important;
+}
