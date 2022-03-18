@@ -10,11 +10,24 @@ if (
     header('Location: /index.php');
 }
 
-$query = "SELECT 
-    `products`.`id` AS `product_id`, `title`, `description`, `image_url`, `price`, `categories`.`name` AS `category_name`
-FROM `products` INNER JOIN `categories` ON `products`.`category_id` = `categories`.`id`";
+$id = $_GET['id'];
+$query = "SELECT * FROM `products` WHERE (`id` = '$id')";
 $response = mysqli_query($db, $query);
-$products = mysqli_fetch_all($response, MYSQLI_ASSOC);
+
+if (mysqli_num_rows($response) === 0) {
+    $_SESSION['message'] = [
+        'type' => 'error',
+        'text' => 'Product not found'
+    ];
+
+    header('Location: /admin/products/index.php');
+} else {
+    $product = mysqli_fetch_assoc($response);
+}
+
+$query = "SELECT * FROM `categories`";
+$response = mysqli_query($db, $query);
+$categories = mysqli_fetch_all($response, MYSQLI_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -125,7 +138,7 @@ $products = mysqli_fetch_all($response, MYSQLI_ASSOC);
 										<div class="nav-inner">
 											<ul class="nav main-menu menu navbar-nav">
 												<li><a href="../../index.php">Home</a></li>
-												<li><a href="../categories/index.php">Categories</a></li>
+												<li><a href="index.php">Categories</a></li>
 												<li class="active"><a href="index.php">Products</a></li>
 											</ul>
 										</div>
@@ -147,7 +160,8 @@ $products = mysqli_fetch_all($response, MYSQLI_ASSOC);
 						<ul class="bread-list">
 							<li><a href="../../index.php">Home<i class="ti-arrow-right"></i></a></li>
 							<li><a href="#">Admin Panel<i class="ti-arrow-right"></i></a></li>
-							<li class="active"><a href="index.php">Products</a></li>
+							<li><a href="index.php">Products<i class="ti-arrow-right"></i></a></li>
+							<li class="active"><a href="#">Edit Product</a></li>
 						</ul>
 					</div>
 
@@ -159,61 +173,77 @@ $products = mysqli_fetch_all($response, MYSQLI_ASSOC);
 		</div>
 	</div>
 
-	<div class="shopping-cart section">
+	<section id="contact-us" class="contact-us section">
 		<div class="container">
-			<div class="row">
-				<div class="col-12">
-					<table class="table shopping-summery">
-						<thead>
-							<tr class="main-hading">
-								<th>PRODUCT</th>
-								<th>NAME</th>
-								<th class="text-center">PRICE</th>
-								<th class="text-center">CATEGORY</th>
-								<th class="text-center">ACTIONS</th>
-							</tr>
-						</thead>
+			<div class="contact-head">
+				<div class="row justify-content-center">
+					<div class="col-lg-8 col-12">
+						<div class="form-main">
+							<form class="form" method="post" action="../../vendor/products/edit.php" enctype="multipart/form-data">
+								<div class="row">
+									<div class="col-lg-12 col-12">
+										<div class="form-group">
+											<label>Product Name<span>*</span></label>
+											<input name="title" type="text" value="<?= $product['title'] ?>" required>
+										</div>
+									</div>
 
-						<tbody>
-                            <?php
-                                foreach ($products as $product) {
-                                    ?>
-                                        <tr>
-                                            <td class="image" data-title="No">
-                                                <img src="../../<?= $product['image_url'] ?>" alt="#">
-                                            </td>
+									<div class="col-lg-12 col-12">
+										<div class="form-group file">
+											<label>Product Image</label>
+											<input name="image" type="file">
+											<input name="image_url" type="hidden" value="<?= $product['image_url'] ?>">
+										</div>
+									</div>
 
-                                            <td class="product-des" data-title="Description">
-                                                <p class="product-name"><a href="#"><?= $product['title'] ?></a></p>
-                                                <p class="product-des"><?= $product['description'] ?></p>
-                                            </td>
+									<div class="col-12">
+										<div class="form-group">
+											<label>Price<span>*</span></label>
+											<input name="price" type="number" value="<?= $product['price'] ?>" required>
+										</div>
+									</div>
 
-                                            <td class="price" data-title="Price">
-                                                <span>$<?= $product['price'] ?></span>
-                                            </td>
+									<div class="col-12">
+										<div class="form-group">
+											<label>Description<span>*</span></label>
+											<textarea name="description"><?= $product['description'] ?></textarea>
+										</div>
+									</div>
 
-                                            <td class="qty" data-title="Category">
-                                                <a class="btn-link"><?= $product['category_name'] ?></a>
-                                            </td>
+									<div class="col-12">
+										<div class="form-group">
+											<label>Category<span>*</span></label>
+											<select name="category_id" id="category">
+                                                <?php
+                                                    foreach ($categories as $category) {
+                                                        ?>
+                                                            <option
+                                                                value="<?= $category['id'] ?>"
+                                                            >
+                                                                <?= $category['name'] ?>
+                                                            </option>
+                                                        <?php
+                                                    }
+                                                ?>
+											</select>
+										</div>
+									</div>
 
-                                            <td class="action" data-title="Actions">
-                                                <a class="mr-2" href="edit.php?id=<?= $product['product_id'] ?>">
-                                                    <i class="ti-pencil remove-icon"></i>
-                                                </a>
-                                                <a href="../../vendor/products/delete.php?id=<?= $product['product_id'] ?>">
-                                                    <i class="ti-trash remove-icon"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    <?php
-                                }
-                            ?>
-						</tbody>
-					</table>
+                                    <input type="hidden" name="id" value="<?= $product['id'] ?>">
+
+									<div class="col-12">
+										<div class="form-group button">
+											<button type="submit" class="btn">Save changes</button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	</section>
 
 	<footer class="footer">
 		<div class="copyright">
