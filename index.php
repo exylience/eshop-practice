@@ -1,4 +1,5 @@
 <?php
+// запускаем сессию
 session_start();
 ?>
 
@@ -54,6 +55,17 @@ session_start();
 		</div>
 	</div>
 
+    <?php
+        // если в сессии есть сообщение, выводим его
+        if (isset($_SESSION['message'])) {
+            ?>
+            <div class="msg <?= $_SESSION['message']['type'] ?>">
+                <p class="msg-text"><?= $_SESSION['message']['text'] ?></p>
+            </div>
+            <?php
+        }
+    ?>
+
 	<header class="header shop">
 		<div class="topbar">
 			<div class="container">
@@ -71,10 +83,13 @@ session_start();
 						<div class="right-content">
 							<ul class="list-main">
                                 <?php
+                                    // проверяем аутентификацию пользователя и выводим подходящие ссылки в верстку
                                     if (isset($_SESSION['user'])) {
                                         ?>
                                             <?php
+                                                // проверяем, админ он или нет
                                                 if ($_SESSION['user']['group'] === 2) {
+                                                    // если админ, выводим ссылку на админку
                                                     ?>
                                                     <li><i class="ti-bolt"></i> <a href="admin/products/index.php">Admin Panel</a></li>
                                                     <?php
