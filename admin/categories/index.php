@@ -72,6 +72,17 @@ $categories = mysqli_fetch_all($response, MYSQLI_ASSOC);
 		</div>
 	</div>
 
+    <?php
+        // если в сессии есть сообщение, выводим его
+        if (isset($_SESSION['message'])) {
+            ?>
+                <div class="msg <?= $_SESSION['message']['type'] ?>">
+                    <p class="msg-text"><?= $_SESSION['message']['text'] ?></p>
+                </div>
+            <?php
+        }
+    ?>
+
 	<header class="header shop">
 		<div class="topbar">
 			<div class="container">

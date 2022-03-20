@@ -1,3 +1,30 @@
+<?php
+// запускаем сессию
+session_start();
+// импортируем файл с подключением к БД
+require_once '../../includes/db.php';
+
+// если пользователь НЕ аутентифицирован или НЕ является админом, переносим его на главную
+if (
+    !isset($_SESSION['user']) ||
+    $_SESSION['user']['group'] !== 2
+) {
+    header('Location: /index.php');
+}
+
+// составляем запрос на выборку всех товаров вместе с категориями
+$query = "SELECT 
+       `products`.`id`, `products`.`title`, `products`.`description`, `products`.`price`, `products`.`image_url`,
+       `products`.`category_id`, `categories`.`name`
+    FROM `products`
+    INNER JOIN `categories`
+    ON `products`.`category_id` = `categories`.`id`";
+// выполняем запрос
+$response = mysqli_query($db, $query);
+// парсим полученные товары в ассоциативный массив
+$products = mysqli_fetch_all($response, MYSQLI_ASSOC);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,6 +76,17 @@
 			</div>
 		</div>
 	</div>
+
+    <?php
+        // если в сессии есть сообщение, выводим его
+        if (isset($_SESSION['message'])) {
+            ?>
+                <div class="msg <?= $_SESSION['message']['type'] ?>">
+                    <p class="msg-text"><?= $_SESSION['message']['text'] ?></p>
+                </div>
+            <?php
+        }
+    ?>
 
 	<header class="header shop">
 		<div class="topbar">
@@ -156,53 +194,47 @@
 						</thead>
 
 						<tbody>
-							<tr>
-								<td class="image" data-title="No"><img src="https://via.placeholder.com/100x100" alt="#"></td>
-								<td class="product-des" data-title="Description">
-									<p class="product-name"><a href="#">Women Dress</a></p>
-									<p class="product-des">Maboriosam in a tonto nesciung eget  distingy magndapibus.</p>
-								</td>
-								<td class="price" data-title="Price"><span>$110.00</span></td>
-								<td class="qty" data-title="Category">
-									<a class="btn-link">Shoes</a>
-								</td>
-								<td class="action" data-title="Actions">
-									<a class="mr-2" href="#"><i class="ti-pencil remove-icon"></i></a>
-									<a href="#"><i class="ti-trash remove-icon"></i></a>
-								</td>
-							</tr>
+                            <?php
+                                // перебираем все товары в цикле и выводим их в верстку
+                                foreach ($products as $product) {
+                                    ?>
+                                        <tr>
+                                            <td class="image" data-title="No">
+                                                <?php
+                                                    // если в бд нет картинки, то выводим "заглушку"
+                                                    if (is_null($product['image_url'])) {
+                                                        ?>
+                                                            <img src="https://via.placeholder.com/100x100" alt="#">
+                                                        <?php
+                                                    } else {
+                                                        ?>
+                                                            <img src="../../<?= $product['image_url'] ?>" alt="#">
+                                                        <?php
+                                                    }
+                                                ?>
+                                            </td>
 
-							<tr>
-								<td class="image" data-title="No"><img src="https://via.placeholder.com/100x100" alt="#"></td>
-								<td class="product-des" data-title="Description">
-									<p class="product-name"><a href="#">Women Dress</a></p>
-									<p class="product-des">Maboriosam in a tonto nesciung eget  distingy magndapibus.</p>
-								</td>
-								<td class="price" data-title="Price"><span>$110.00</span></td>
-								<td class="qty" data-title="Category">
-									<a class="btn-link">Shoes</a>
-								</td>
-								<td class="action" data-title="Remove">
-									<a class="mr-2" href="#"><i class="ti-pencil remove-icon"></i></a>
-									<a href="#"><i class="ti-trash remove-icon"></i></a>
-								</td>
-							</tr>
+                                            <td class="product-des" data-title="Description">
+                                                <p class="product-name"><a href="#"><?= $product['title'] ?></a></p>
+                                                <p class="product-des">
+                                                    <?= substr($product['description'], 0, 20) ?>
+                                                </p>
+                                            </td>
 
-							<tr>
-								<td class="image" data-title="No"><img src="https://via.placeholder.com/100x100" alt="#"></td>
-								<td class="product-des" data-title="Description">
-									<p class="product-name"><a href="#">Women Dress</a></p>
-									<p class="product-des">Maboriosam in a tonto nesciung eget  distingy magndapibus.</p>
-								</td>
-								<td class="price" data-title="Price"><span>$110.00</span></td>
-								<td class="qty" data-title="Category">
-									<a class="btn-link">Shoes</a>
-								</td>
-								<td class="action" data-title="Remove">
-									<a class="mr-2" href="#"><i class="ti-pencil remove-icon"></i></a>
-									<a href="#"><i class="ti-trash remove-icon"></i></a>
-								</td>
-							</tr>
+                                            <td class="price" data-title="Price"><span><?= $product['price'] ?></span></td>
+
+                                            <td class="qty" data-title="Category">
+                                                <a class="btn-link"><?= $product['name'] ?></a>
+                                            </td>
+
+                                            <td class="action" data-title="Remove">
+                                                <a class="mr-2" href="#"><i class="ti-pencil remove-icon"></i></a>
+                                                <a href="#"><i class="ti-trash remove-icon"></i></a>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                }
+                            ?>
 						</tbody>
 					</table>
 				</div>
