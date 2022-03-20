@@ -12,12 +12,28 @@ if (
     header('Location: /index.php');
 }
 
-// составляем запрос на выборку всех категорий
-$query = "SELECT * FROM `categories`";
+// получаем id категории из GET параметра
+$id = $_GET['id'];
+
+// составляем запрос на удаление записи из таблицы
+$query = "SELECT * FROM `categories` WHERE (`id` = '$id')";
 // выполняем запрос
 $response = mysqli_query($db, $query);
-// парсим полученные категории в ассоциативный массив
-$categories = mysqli_fetch_all($response, MYSQLI_ASSOC);
+
+// проверяем, вернулись ли хоть какие-нибудь записи из таблицы
+if (mysqli_num_rows($response) > 0) {
+    // если да, то парсим данные категории в ассоциативный массив
+    $category = mysqli_fetch_assoc($response);
+} else { // если совпадений не нашлось
+    // заносим в сессию ошибку 404
+    $_SESSION['message'] = [
+        'type' => 'error',
+        'text' => 'Category not found'
+    ];
+
+    // возвращаем пользователя назад
+    header('Location: /admin/categories/index.php');
+}
 ?>
 
 <!DOCTYPE html>
@@ -108,10 +124,10 @@ $categories = mysqli_fetch_all($response, MYSQLI_ASSOC);
                                             if ($_SESSION['user']['group'] === 2) {
                                                 // если админ, выводим ссылку на админку
                                                 ?>
-                                                    <li><i class="ti-bolt"></i> <a href="admin/products/index.php">Admin Panel</a></li>
+                                                <li><i class="ti-bolt"></i> <a href="admin/products/index.php">Admin Panel</a></li>
                                                 <?php
                                             }
-                                        ?>
+                                            ?>
 
                                             <li><i class="ti-user"></i> <a href="#">My account</a></li>
                                             <li><i class="ti-power-off"></i><a href="vendor/auth/logout.php">Logout</a></li>
@@ -134,7 +150,7 @@ $categories = mysqli_fetch_all($response, MYSQLI_ASSOC);
 				<div class="row">
 					<div class="col-lg-2 col-md-2 col-12">
 						<div class="logo">
-							<a href="index.php"><img src="../../images/logo.png" alt="logo"></a>
+							<a href="../../index.php"><img src="../../images/logo.png" alt="logo"></a>
 						</div>
 
 						<div class="mobile-nav"></div>
@@ -182,7 +198,8 @@ $categories = mysqli_fetch_all($response, MYSQLI_ASSOC);
 						<ul class="bread-list">
 							<li><a href="../../index.php">Home<i class="ti-arrow-right"></i></a></li>
 							<li><a href="#">Admin Panel<i class="ti-arrow-right"></i></a></li>
-							<li class="active"><a href="index.php">Categories</a></li>
+							<li><a href="index.php">Categories<i class="ti-arrow-right"></i></a></li>
+							<li class="active"><a href="add.php">Create Category</a></li>
 						</ul>
 					</div>
 
@@ -194,47 +211,37 @@ $categories = mysqli_fetch_all($response, MYSQLI_ASSOC);
 		</div>
 	</div>
 
-	<div class="shopping-cart section">
+	<section id="contact-us" class="contact-us section">
 		<div class="container">
-			<div class="row">
-				<div class="col-12">
-					<table class="table shopping-summery">
-						<thead>
-							<tr class="main-hading">
-								<th>NAME</th>
-								<th class="text-center">ACTIONS</th>
-							</tr>
-						</thead>
+			<div class="contact-head">
+				<div class="row justify-content-center">
+					<div class="col-lg-8 col-12">
+						<div class="form-main">
+							<form class="form" method="post" action="../../vendor/categories/edit.php">
+								<div class="row">
+									<div class="col-lg-6 col-12">
+										<div class="form-group">
+                                            <!-- раскидываем данные по инпутам -->
+											<label>Category Name<span>*</span></label>
+											<input name="name" type="text" value="<?= $category['name'] ?>" required>
+                                            <!-- скрытый инпут для передачи в обработчик id категории -->
+											<input name="id" type="hidden" value="<?= $category['id'] ?>" required>
+										</div>
+									</div>
 
-						<tbody>
-                            <?php
-                                // перебираем в цикле категории и выводим их в верстку
-                                foreach ($categories as $category) {
-                                    ?>
-                                        <tr>
-                                            <td class="product-des" data-title="Name">
-                                                <p class="product-name"><a href="#"><?= $category['name'] ?></a></p>
-                                            </td>
-
-                                            <td class="action" data-title="Actions">
-                                                <a class="mr-2" href="edit.php?id=<?= $category['id'] ?>">
-                                                    <i class="ti-pencil remove-icon"></i>
-                                                </a>
-
-                                                <a href="../../vendor/categories/delete.php?id=<?= $category['id'] ?>">
-                                                    <i class="ti-trash remove-icon"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    <?php
-                                }
-                            ?>
-						</tbody>
-					</table>
+									<div class="col-12">
+										<div class="form-group button">
+											<button type="submit" class="btn">Save changes</button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	</section>
 
 	<footer class="footer">
 		<div class="copyright">
