@@ -1,3 +1,25 @@
+<?php
+// запускаем сессию
+session_start();
+// импортируем файл с подключением к БД
+require_once '../../includes/db.php';
+
+// если пользователь НЕ аутентифицирован или НЕ является админом, переносим его на главную
+if (
+    !isset($_SESSION['user']) ||
+    $_SESSION['user']['group'] !== 2
+) {
+    header('Location: /index.php');
+}
+
+// составляем запрос на выборку всех категорий
+$query = "SELECT * FROM `categories`";
+// выполняем запрос
+$response = mysqli_query($db, $query);
+// парсим полученные категории в ассоциативный массив
+$categories = mysqli_fetch_all($response, MYSQLI_ASSOC);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,6 +71,17 @@
 			</div>
 		</div>
 	</div>
+
+    <?php
+        // если в сессии есть сообщение, выводим его
+        if (isset($_SESSION['message'])) {
+            ?>
+                <div class="msg <?= $_SESSION['message']['type'] ?>">
+                    <p class="msg-text"><?= $_SESSION['message']['text'] ?></p>
+                </div>
+            <?php
+        }
+    ?>
 
 	<header class="header shop">
 		<div class="topbar">
@@ -106,7 +139,7 @@
 										<div class="nav-inner">
 											<ul class="nav main-menu menu navbar-nav">
 												<li><a href="../../index.php">Home</a></li>
-												<li><a href="index.php">Categories</a></li>
+												<li><a href="../categories/index.php">Categories</a></li>
 												<li class="active"><a href="index.php">Products</a></li>
 											</ul>
 										</div>
@@ -147,12 +180,12 @@
 				<div class="row justify-content-center">
 					<div class="col-lg-8 col-12">
 						<div class="form-main">
-							<form class="form" method="post" action="#">
+							<form class="form" method="post" action="../../vendor/products/add.php" enctype="multipart/form-data">
 								<div class="row">
 									<div class="col-lg-12 col-12">
 										<div class="form-group">
 											<label>Product Name<span>*</span></label>
-											<input name="name" type="text" required>
+											<input name="title" type="text" required>
 										</div>
 									</div>
 
@@ -181,9 +214,16 @@
 										<div class="form-group">
 											<label>Category<span>*</span></label>
 											<select name="category_id" id="category">
-												<option value="1">Shoes</option>
-												<option value="2">Bruh</option>
-												<option value="3">Dress</option>
+                                                <?php
+                                                    // перебираем в цикле все категории и выводим в выпадающий список в качестве пунктов
+                                                    foreach ($categories as $category) {
+                                                        ?>
+                                                            <option value="<?= $category['id'] ?>">
+                                                                <?= $category['name'] ?>
+                                                            </option>
+                                                        <?php
+                                                    }
+                                                ?>
 											</select>
 										</div>
 									</div>

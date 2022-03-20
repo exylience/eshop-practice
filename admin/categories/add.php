@@ -63,6 +63,17 @@ if (
 		</div>
 	</div>
 
+    <?php
+        // если в сессии есть сообщение, выводим его
+        if (isset($_SESSION['message'])) {
+            ?>
+                <div class="msg <?= $_SESSION['message']['type'] ?>">
+                    <p class="msg-text"><?= $_SESSION['message']['text'] ?></p>
+                </div>
+            <?php
+        }
+    ?>
+
 	<header class="header shop">
 		<div class="topbar">
 			<div class="container">
@@ -141,7 +152,7 @@ if (
 											<ul class="nav main-menu menu navbar-nav">
 												<li><a href="../../index.php">Home</a></li>
 												<li class="active"><a href="index.php">Categories</a></li>
-												<li><a href="#">Products</a></li>
+												<li><a href="../products/index.php">Products</a></li>
 											</ul>
 										</div>
 									</div>

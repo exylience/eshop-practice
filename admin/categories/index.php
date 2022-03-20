@@ -150,7 +150,7 @@ $categories = mysqli_fetch_all($response, MYSQLI_ASSOC);
 											<ul class="nav main-menu menu navbar-nav">
 												<li><a href="../../index.php">Home</a></li>
 												<li class="active"><a href="index.php">Categories</a></li>
-												<li><a href="#">Products</a></li>
+												<li><a href="../products/index.php">Products</a></li>
 											</ul>
 										</div>
 									</div>
