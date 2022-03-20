@@ -8,7 +8,7 @@ require_once '../../includes/db.php';
 $id = $_POST['id'];
 $name = $_POST['name'];
 
-// составляем запрос на добавление записи в таблицу
+// составляем запрос на обновление записи в таблице
 $query = "UPDATE `categories` SET `name` = '$name' WHERE (`id` = '$id')";
 // выполняем запрос
 $response = mysqli_query($db, $query);

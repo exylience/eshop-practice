@@ -12,28 +12,41 @@ if (
     header('Location: /index.php');
 }
 
-// получаем id категории из GET параметра
+// получаем id товара из GET параметра
 $id = $_GET['id'];
 
 // составляем запрос на получение записи из таблицы
-$query = "SELECT * FROM `categories` WHERE (`id` = '$id')";
+$query = "SELECT 
+       `products`.`id`, `products`.`title`, `products`.`description`, `products`.`price`, `products`.`image_url`,
+       `products`.`category_id` 
+    FROM `products` 
+    INNER JOIN `categories`
+    ON `products`.`category_id` = `categories`.`id`
+    WHERE (`products`.`id` = '$id')";
 // выполняем запрос
 $response = mysqli_query($db, $query);
 
 // проверяем, вернулись ли хоть какие-нибудь записи из таблицы
 if (mysqli_num_rows($response) > 0) {
     // если да, то парсим данные категории в ассоциативный массив
-    $category = mysqli_fetch_assoc($response);
+    $product = mysqli_fetch_assoc($response);
 } else { // если совпадений не нашлось
     // заносим в сессию ошибку 404
     $_SESSION['message'] = [
         'type' => 'error',
-        'text' => 'Category not found'
+        'text' => 'Product not found'
     ];
 
     // возвращаем пользователя назад
-    header('Location: /admin/categories/index.php');
+    header('Location: /admin/products/index.php');
 }
+
+// составляем запрос на выборку всех категорий
+$query = "SELECT * FROM `categories`";
+// выполняем запрос
+$response = mysqli_query($db, $query);
+// парсим полученные категории в ассоциативный массив
+$categories = mysqli_fetch_all($response, MYSQLI_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -115,29 +128,8 @@ if (mysqli_num_rows($response) > 0) {
 					<div class="col-lg-7 col-md-12 col-12">
 						<div class="right-content">
 							<ul class="list-main">
-                                <?php
-                                    // проверяем аутентификацию пользователя и выводим подходящие ссылки в верстку
-                                    if (isset($_SESSION['user'])) {
-                                        ?>
-                                            <?php
-                                            // проверяем, админ он или нет
-                                            if ($_SESSION['user']['group'] === 2) {
-                                                // если админ, выводим ссылку на админку
-                                                ?>
-                                                <li><i class="ti-bolt"></i> <a href="admin/products/index.php">Admin Panel</a></li>
-                                                <?php
-                                            }
-                                            ?>
-
-                                            <li><i class="ti-user"></i> <a href="#">My account</a></li>
-                                            <li><i class="ti-power-off"></i><a href="vendor/auth/logout.php">Logout</a></li>
-                                        <?php
-                                    } else {
-                                        ?>
-                                            <li><i class="ti-power-off"></i><a href="login.php">Login</a></li>
-                                        <?php
-                                    }
-                                ?>
+								<li><i class="ti-user"></i> <a href="#">My account</a></li>
+								<li><i class="ti-power-off"></i><a href="login.html#">Logout</a></li>
 							</ul>
 						</div>
 					</div>
@@ -150,7 +142,7 @@ if (mysqli_num_rows($response) > 0) {
 				<div class="row">
 					<div class="col-lg-2 col-md-2 col-12">
 						<div class="logo">
-							<a href="../../index.php"><img src="../../images/logo.png" alt="logo"></a>
+							<a href="index.php"><img src="../../images/logo.png" alt="logo"></a>
 						</div>
 
 						<div class="mobile-nav"></div>
@@ -176,8 +168,8 @@ if (mysqli_num_rows($response) > 0) {
 										<div class="nav-inner">
 											<ul class="nav main-menu menu navbar-nav">
 												<li><a href="../../index.php">Home</a></li>
-												<li class="active"><a href="index.php">Categories</a></li>
-												<li><a href="../products/index.php">Products</a></li>
+												<li><a href="../categories/index.php">Categories</a></li>
+												<li class="active"><a href="index.php">Products</a></li>
 											</ul>
 										</div>
 									</div>
@@ -198,13 +190,13 @@ if (mysqli_num_rows($response) > 0) {
 						<ul class="bread-list">
 							<li><a href="../../index.php">Home<i class="ti-arrow-right"></i></a></li>
 							<li><a href="#">Admin Panel<i class="ti-arrow-right"></i></a></li>
-							<li><a href="index.php">Categories<i class="ti-arrow-right"></i></a></li>
-							<li class="active"><a href="#">Edit Category</a></li>
+							<li><a href="index.php">Products<i class="ti-arrow-right"></i></a></li>
+							<li class="active"><a href="#">Edit Product</a></li>
 						</ul>
 					</div>
 
 					<div class="navbar-links">
-						<a href="add.php"><i class="ti-plus mr-2"></i> Create Category</a>
+						<a href="add.php"><i class="ti-plus mr-2"></i> Create Product</a>
 					</div>
 				</div>
 			</div>
@@ -217,22 +209,66 @@ if (mysqli_num_rows($response) > 0) {
 				<div class="row justify-content-center">
 					<div class="col-lg-8 col-12">
 						<div class="form-main">
-							<form class="form" method="post" action="../../vendor/categories/edit.php">
+							<form class="form" method="post" action="../../vendor/products/edit.php" enctype="multipart/form-data">
 								<div class="row">
-									<div class="col-lg-6 col-12">
+									<div class="col-lg-12 col-12">
 										<div class="form-group">
                                             <!-- раскидываем данные по инпутам -->
-											<label>Category Name<span>*</span></label>
-											<input name="name" type="text" value="<?= $category['name'] ?>" required>
+											<label>Product Name<span>*</span></label>
+											<input name="title" type="text" value="<?= $product['title'] ?>" required>
 										</div>
+									</div>
 
-                                        <!-- скрытый инпут для передачи в обработчик id категории -->
-                                        <input name="id" type="hidden" value="<?= $category['id'] ?>">
+									<div class="col-lg-12 col-12">
+										<div class="form-group">
+											<label>Product Image</label>
+											<input name="image" type="file">
+                                            <!-- скрытый инпут для передачи в обработчик картинки товара -->
+											<input name="image_url" type="hidden" value="<?= $product['image_url'] ?>">
+										</div>
 									</div>
 
 									<div class="col-12">
+										<div class="form-group">
+											<label>Price<span>*</span></label>
+											<input name="price" type="number" value="<?= $product['price'] ?>" required>
+										</div>
+									</div>
+
+									<div class="col-12">
+										<div class="form-group message">
+											<label>Description<span>*</span></label>
+											<textarea name="description"><?= $product['description'] ?></textarea>
+										</div>
+									</div>
+
+									<div class="col-12">
+										<div class="form-group">
+											<label>Category<span>*</span></label>
+											<select name="category_id" id="category">
+                                                <?php
+                                                    // перебираем в цикле все категории и выводим в выпадающий список в качестве пунктов
+                                                    foreach ($categories as $category) {
+                                                        ?>
+                                                            <option
+                                                                value="<?= $category['id'] ?>"
+                                                                <?= (int)$product['category_id'] === (int)$category['id'] ? 'selected="selected"' : '' ?>
+                                                            >
+                                                                <?= $category['name'] ?>
+                                                            </option>
+                                                        <?php
+                                                    }
+                                                ?>
+											</select>
+										</div>
+									</div>
+
+                                    <!-- скрытый инпут для передачи в обработчик id товара -->
+                                    <input name="id" type="hidden" value="<?= $product['id'] ?>">
+
+									<div class="col-12">
 										<div class="form-group button">
-											<button type="submit" class="btn">Save changes</button>
+											<button type="submit" class="btn">Create</button>
 										</div>
 									</div>
 								</div>

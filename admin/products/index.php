@@ -228,7 +228,7 @@ $products = mysqli_fetch_all($response, MYSQLI_ASSOC);
                                             </td>
 
                                             <td class="action" data-title="Remove">
-                                                <a class="mr-2" href="#">
+                                                <a class="mr-2" href="edit.php?id=<?= $product['id'] ?>">
                                                     <i class="ti-pencil remove-icon"></i>
                                                 </a>
 

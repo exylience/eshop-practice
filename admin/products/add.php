@@ -206,7 +206,7 @@ $categories = mysqli_fetch_all($response, MYSQLI_ASSOC);
 									<div class="col-12">
 										<div class="form-group message">
 											<label>Description<span>*</span></label>
-											<textarea name="message"></textarea>
+											<textarea name="description"></textarea>
 										</div>
 									</div>
 
