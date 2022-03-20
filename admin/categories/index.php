@@ -80,7 +80,7 @@
 				<div class="row">
 					<div class="col-lg-2 col-md-2 col-12">
 						<div class="logo">
-							<a href="index.html"><img src="../../images/logo.png" alt="logo"></a>
+							<a href="index.php"><img src="../../images/logo.png" alt="logo"></a>
 						</div>
 
 						<div class="mobile-nav"></div>
@@ -106,7 +106,7 @@
 										<div class="nav-inner">
 											<ul class="nav main-menu menu navbar-nav">
 												<li><a href="../../index.php">Home</a></li>
-												<li class="active"><a href="index.html">Categories</a></li>
+												<li class="active"><a href="index.php">Categories</a></li>
 												<li><a href="#">Products</a></li>
 											</ul>
 										</div>
@@ -128,47 +128,76 @@
 						<ul class="bread-list">
 							<li><a href="../../index.php">Home<i class="ti-arrow-right"></i></a></li>
 							<li><a href="#">Admin Panel<i class="ti-arrow-right"></i></a></li>
-							<li><a href="index.html">Categories<i class="ti-arrow-right"></i></a></li>
-							<li class="active"><a href="add.html">Create Category</a></li>
+							<li class="active"><a href="index.php">Categories</a></li>
 						</ul>
 					</div>
 
 					<div class="navbar-links">
-						<a href="add.html"><i class="ti-plus mr-2"></i> Create Category</a>
+						<a href="add.php"><i class="ti-plus mr-2"></i> Create Category</a>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<section id="contact-us" class="contact-us section">
+	<div class="shopping-cart section">
 		<div class="container">
-			<div class="contact-head">
-				<div class="row justify-content-center">
-					<div class="col-lg-8 col-12">
-						<div class="form-main">
-							<form class="form" method="post" action="#">
-								<div class="row">
-									<div class="col-lg-6 col-12">
-										<div class="form-group">
-											<label>Category Name<span>*</span></label>
-											<input name="name" type="text" required>
-										</div>
-									</div>
+			<div class="row">
+				<div class="col-12">
+					<table class="table shopping-summery">
+						<thead>
+							<tr class="main-hading">
+								<th>NAME</th>
+								<th class="text-center">ACTIONS</th>
+							</tr>
+						</thead>
 
-									<div class="col-12">
-										<div class="form-group button">
-											<button type="submit" class="btn">Create</button>
-										</div>
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
+						<tbody>
+							<tr>
+								<td class="product-des" data-title="Name">
+									<p class="product-name"><a href="#">Women Dress</a></p>
+								</td>
+								<td class="action" data-title="Actions">
+									<a class="mr-2" href="#"><i class="ti-pencil remove-icon"></i></a>
+									<a href="#"><i class="ti-trash remove-icon"></i></a>
+								</td>
+							</tr>
+
+							<tr>
+								<td class="product-des" data-title="Name">
+									<p class="product-name"><a href="#">Women Dress</a></p>
+								</td>
+								<td class="action" data-title="Actions">
+									<a class="mr-2" href="#"><i class="ti-pencil remove-icon"></i></a>
+									<a href="#"><i class="ti-trash remove-icon"></i></a>
+								</td>
+							</tr>
+
+							<tr>
+								<td class="product-des" data-title="Name">
+									<p class="product-name"><a href="#">Women Dress</a></p>
+								</td>
+								<td class="action" data-title="Actions">
+									<a class="mr-2" href="#"><i class="ti-pencil remove-icon"></i></a>
+									<a href="#"><i class="ti-trash remove-icon"></i></a>
+								</td>
+							</tr>
+
+							<tr>
+								<td class="product-des" data-title="Name">
+									<p class="product-name"><a href="#">Women Dress</a></p>
+								</td>
+								<td class="action" data-title="Actions">
+									<a class="mr-2" href="#"><i class="ti-pencil remove-icon"></i></a>
+									<a href="#"><i class="ti-trash remove-icon"></i></a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
 			</div>
 		</div>
-	</section>
+	</div>
 
 	<footer class="footer">
 		<div class="copyright">

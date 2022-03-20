@@ -58,6 +58,16 @@ if (isset($_SESSION['user'])) {
 		</div>
 	</div>
 
+    <?php
+        if (isset($_SESSION['message'])) {
+            ?>
+                <div class="msg <?= $_SESSION['message']['type'] ?>">
+                    <p class="msg-text"><?= $_SESSION['message']['text'] ?></p>
+                </div>
+            <?php
+        }
+    ?>
+
 	<header class="header shop">
 		<div class="topbar">
 			<div class="container">

@@ -80,7 +80,7 @@
 				<div class="row">
 					<div class="col-lg-2 col-md-2 col-12">
 						<div class="logo">
-							<a href="index.html"><img src="../../images/logo.png" alt="logo"></a>
+							<a href="index.php"><img src="../../images/logo.png" alt="logo"></a>
 						</div>
 
 						<div class="mobile-nav"></div>
@@ -106,8 +106,8 @@
 										<div class="nav-inner">
 											<ul class="nav main-menu menu navbar-nav">
 												<li><a href="../../index.php">Home</a></li>
-												<li><a href="index.html">Categories</a></li>
-												<li class="active"><a href="index.html">Products</a></li>
+												<li><a href="index.php">Categories</a></li>
+												<li class="active"><a href="index.php">Products</a></li>
 											</ul>
 										</div>
 									</div>
@@ -128,13 +128,13 @@
 						<ul class="bread-list">
 							<li><a href="../../index.php">Home<i class="ti-arrow-right"></i></a></li>
 							<li><a href="#">Admin Panel<i class="ti-arrow-right"></i></a></li>
-							<li><a href="index.html">Products<i class="ti-arrow-right"></i></a></li>
-							<li class="active"><a href="add.html">Create Product</a></li>
+							<li><a href="index.php">Products<i class="ti-arrow-right"></i></a></li>
+							<li class="active"><a href="add.php">Create Product</a></li>
 						</ul>
 					</div>
 
 					<div class="navbar-links">
-						<a href="add.html"><i class="ti-plus mr-2"></i> Create Product</a>
+						<a href="add.php"><i class="ti-plus mr-2"></i> Create Product</a>
 					</div>
 				</div>
 			</div>
