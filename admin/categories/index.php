@@ -1,3 +1,17 @@
+<?php
+// запускаем сессию
+session_start();
+// импортируем файл с подключением к БД
+require_once '../../includes/db.php';
+
+// составляем запрос на выборку всех категорий
+$query = "SELECT * FROM `categories`";
+// выполняем запрос
+$response = mysqli_query($db, $query);
+// парсим полученные категории в ассоциативный массив
+$categories = mysqli_fetch_all($response, MYSQLI_ASSOC);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -153,45 +167,23 @@
 						</thead>
 
 						<tbody>
-							<tr>
-								<td class="product-des" data-title="Name">
-									<p class="product-name"><a href="#">Women Dress</a></p>
-								</td>
-								<td class="action" data-title="Actions">
-									<a class="mr-2" href="#"><i class="ti-pencil remove-icon"></i></a>
-									<a href="#"><i class="ti-trash remove-icon"></i></a>
-								</td>
-							</tr>
+                            <?php
+                                // перебираем в цикле категории и выводим их в верстку
+                                foreach ($categories as $category) {
+                                    ?>
+                                        <tr>
+                                            <td class="product-des" data-title="Name">
+                                                <p class="product-name"><a href="#"><?= $category['name'] ?></a></p>
+                                            </td>
 
-							<tr>
-								<td class="product-des" data-title="Name">
-									<p class="product-name"><a href="#">Women Dress</a></p>
-								</td>
-								<td class="action" data-title="Actions">
-									<a class="mr-2" href="#"><i class="ti-pencil remove-icon"></i></a>
-									<a href="#"><i class="ti-trash remove-icon"></i></a>
-								</td>
-							</tr>
-
-							<tr>
-								<td class="product-des" data-title="Name">
-									<p class="product-name"><a href="#">Women Dress</a></p>
-								</td>
-								<td class="action" data-title="Actions">
-									<a class="mr-2" href="#"><i class="ti-pencil remove-icon"></i></a>
-									<a href="#"><i class="ti-trash remove-icon"></i></a>
-								</td>
-							</tr>
-
-							<tr>
-								<td class="product-des" data-title="Name">
-									<p class="product-name"><a href="#">Women Dress</a></p>
-								</td>
-								<td class="action" data-title="Actions">
-									<a class="mr-2" href="#"><i class="ti-pencil remove-icon"></i></a>
-									<a href="#"><i class="ti-trash remove-icon"></i></a>
-								</td>
-							</tr>
+                                            <td class="action" data-title="Actions">
+                                                <a class="mr-2" href="#"><i class="ti-pencil remove-icon"></i></a>
+                                                <a href="#"><i class="ti-trash remove-icon"></i></a>
+                                            </td>
+                                        </tr>
+                                    <?php
+                                }
+                            ?>
 						</tbody>
 					</table>
 				</div>
