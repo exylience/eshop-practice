@@ -268,7 +268,7 @@ $categories = mysqli_fetch_all($response, MYSQLI_ASSOC);
 
 									<div class="col-12">
 										<div class="form-group button">
-											<button type="submit" class="btn">Create</button>
+											<button type="submit" class="btn">Save changes</button>
 										</div>
 									</div>
 								</div>
