@@ -217,8 +217,13 @@ $categories = mysqli_fetch_all($response, MYSQLI_ASSOC);
                                             </td>
 
                                             <td class="action" data-title="Actions">
-                                                <a class="mr-2" href="#"><i class="ti-pencil remove-icon"></i></a>
-                                                <a href="#"><i class="ti-trash remove-icon"></i></a>
+                                                <a class="mr-2" href="#">
+                                                    <i class="ti-pencil remove-icon"></i>
+                                                </a>
+
+                                                <a href="../../vendor/categories/delete.php?id=<?= $category['id'] ?>">
+                                                    <i class="ti-trash remove-icon"></i>
+                                                </a>
                                             </td>
                                         </tr>
                                     <?php
