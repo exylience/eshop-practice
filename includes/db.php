@@ -9,7 +9,7 @@
  * password (3) - пароль БД
  * database (4) - имя базы данных
  */
-$db = mysqli_connect('localhost', 'root', '488Lalka228', 'eshop');
+$db = mysqli_connect('localhost', 'root', '', 'shop');
 
 // если подключение не удалось
 if (!$db) {

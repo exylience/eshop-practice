@@ -211,7 +211,7 @@ $products = mysqli_fetch_all($response, MYSQLI_ASSOC);
 												<li><a href="#">Service</a></li>
 												<li><a href="#">Shop<i class="ti-angle-down"></i></a>
 													<ul class="dropdown">
-														<li><a href="cart.html">Cart</a></li>
+														<li><a href="cart.php">Cart</a></li>
 														<li><a href="checkout.html">Checkout</a></li>
 													</ul>
 												</li>
@@ -271,7 +271,14 @@ $products = mysqli_fetch_all($response, MYSQLI_ASSOC);
                                         foreach ($categories as $key => $category) {
                                             ?>
                                                 <li class="nav-item">
-                                                    <a class="nav-link <?= array_search($key, array_keys($categories)) === 0 ? 'active' : ''?>" data-toggle="tab" href="#<?= strtolower($category['name']) ?>" role="tab"><?= $category['name'] ?></a>
+                                                    <a
+                                                        class="nav-link <?= array_search($key, array_keys($categories)) === 0 ? 'active' : ''?>"
+                                                        data-toggle="tab"
+                                                        href="#<?= strtolower($category['name']) ?>"
+                                                        role="tab"
+                                                    >
+                                                        <?= $category['name'] ?>
+                                                    </a>
                                                 </li>
                                             <?php
                                         }
@@ -283,7 +290,7 @@ $products = mysqli_fetch_all($response, MYSQLI_ASSOC);
                                 <?php
                                     foreach ($categories as $key => $category) {
                                         ?>
-                                            <div class="tab-pane fade <?= array_search($key, array_keys($categories)) === 0 ? 'show active' : ''?>" id="<?= strtolower($key) ?>" role="tabpanel">
+                                            <div class="tab-pane fade <?= array_search($key, array_keys($categories)) === 0 ? 'show active' : ''?>" id="<?= strtolower($category['name']) ?>" role="tabpanel">
                                                 <div class="tab-single">
                                                     <div class="row">
                                                         <?php
@@ -768,8 +775,6 @@ $products = mysqli_fetch_all($response, MYSQLI_ASSOC);
 	<script src="js/popper.min.js"></script>
 	<!-- Bootstrap JS -->
 	<script src="js/bootstrap.min.js"></script>
-	<!-- Color JS -->
-	<script src="js/colors.js"></script>
 	<!-- Slicknav JS -->
 	<script src="js/slicknav.min.js"></script>
 	<!-- Owl Carousel JS -->
