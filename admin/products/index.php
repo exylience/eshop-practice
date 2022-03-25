@@ -104,8 +104,29 @@ $products = mysqli_fetch_all($response, MYSQLI_ASSOC);
 					<div class="col-lg-7 col-md-12 col-12">
 						<div class="right-content">
 							<ul class="list-main">
-								<li><i class="ti-user"></i> <a href="#">My account</a></li>
-								<li><i class="ti-power-off"></i><a href="login.html#">Logout</a></li>
+                                <?php
+                                    // проверяем аутентификацию пользователя и выводим подходящие ссылки в верстку
+                                    if (isset($_SESSION['user'])) {
+                                        ?>
+                                            <?php
+                                                // проверяем, админ он или нет
+                                                if ($_SESSION['user']['group'] === 2) {
+                                                    // если админ, выводим ссылку на админку
+                                                    ?>
+                                                        <li><i class="ti-bolt"></i> <a href="admin/products/index.php">Admin Panel</a></li>
+                                                    <?php
+                                                }
+                                            ?>
+
+                                            <li><i class="ti-user"></i> <a href="#">My account</a></li>
+                                            <li><i class="ti-power-off"></i><a href="vendor/auth/logout.php">Logout</a></li>
+                                        <?php
+                                    } else {
+                                        ?>
+                                            <li><i class="ti-power-off"></i><a href="login.php">Login</a></li>
+                                        <?php
+                                    }
+                                ?>
 							</ul>
 						</div>
 					</div>

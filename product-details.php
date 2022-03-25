@@ -1,3 +1,48 @@
+<?php
+// запускаем сессию
+session_start();
+// импортируем файл с подключением к БД
+require_once 'includes/db.php';
+
+// получаем id товара из GET параметра
+$id = $_GET['id'];
+
+// составляем запрос на выборку товара вместе с категорией
+$query = "SELECT 
+       `products`.`id`, `products`.`title`, `products`.`description`, `products`.`price`, `products`.`image_url`,
+       `products`.`category_id`, `categories`.`name`
+    FROM `products`
+    INNER JOIN `categories`
+    ON `products`.`category_id` = `categories`.`id`
+    WHERE (`products`.`id` = '$id')";
+// выполняем запрос
+$response = mysqli_query($db, $query);
+// проверяем, вернулись ли хоть какие-нибудь записи из таблицы
+if (mysqli_num_rows($response) > 0) {
+    // если да, то парсим данные категории в ассоциативный массив
+    $product = mysqli_fetch_assoc($response);
+} else { // если совпадений не нашлось
+    // заносим в сессию ошибку 404
+    $_SESSION['message'] = [
+        'type' => 'error',
+        'text' => 'Product not found'
+    ];
+
+    // возвращаем пользователя назад
+    header('Location: /index.php');
+}
+
+$query = "SELECT 
+    `reviews`.`id`, `reviews`.`message`, `reviews`.`user_id`, `reviews`.`stars`,
+    `users`.`name`
+    FROM `reviews`
+    INNER JOIN `users`
+    ON `reviews`.`user_id` = `users`.`id`
+    WHERE (`reviews`.`id` = '$id')";
+$response = mysqli_query($db, $query);
+$reviews = mysqli_fetch_all($response, MYSQLI_ASSOC);
+?>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -66,8 +111,29 @@
                     <div class="col-lg-7 col-md-12 col-12">
                         <div class="right-content">
                             <ul class="list-main">
-                                <li><i class="ti-user"></i> <a href="#">My account</a></li>
-                                <li><i class="ti-power-off"></i><a href="login.php#">Login</a></li>
+                                <?php
+                                    // проверяем аутентификацию пользователя и выводим подходящие ссылки в верстку
+                                    if (isset($_SESSION['user'])) {
+                                        ?>
+                                            <?php
+                                                // проверяем, админ он или нет
+                                                if ($_SESSION['user']['group'] === 2) {
+                                                    // если админ, выводим ссылку на админку
+                                                    ?>
+                                                        <li><i class="ti-bolt"></i> <a href="admin/products/index.php">Admin Panel</a></li>
+                                                    <?php
+                                                }
+                                            ?>
+
+                                            <li><i class="ti-user"></i> <a href="#">My account</a></li>
+                                            <li><i class="ti-power-off"></i><a href="vendor/auth/logout.php">Logout</a></li>
+                                        <?php
+                                    } else {
+                                        ?>
+                                            <li><i class="ti-power-off"></i><a href="login.php">Login</a></li>
+                                        <?php
+                                    }
+                                ?>
                             </ul>
                         </div>
                     </div>
@@ -198,14 +264,20 @@
                     <div class="row">
                         <div class="col-lg-6 col-12">
                             <div class="product-gallery">
-                                <img src="uploads/1647928226_1HBpVTav1vg.jpg" alt="#">
+                                <?php
+                                    if (!is_null($product)) {
+                                        ?>
+                                            <img src="<?= $product['image_url'] ?>" alt="#">
+                                        <?php
+                                    }
+                                ?>
                             </div>
                         </div>
 
                         <div class="col-lg-6 col-12">
                             <div class="product-des">
                                 <div class="short">
-                                    <h4>Product Title</h4>
+                                    <h4><?= $product['title'] ?></h4>
 
                                     <div class="rating-main">
                                         <ul class="rating">
@@ -220,12 +292,10 @@
                                     </div>
 
                                     <p class="price">
-                                        <span class="discount">$70.00</span>
+                                        <span class="discount">$<?= $product['price'] ?></span>
                                     </p>
 
-                                    <p class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                        Amet debitis delectus doloremque eos esse ex ipsam iusto magni minus nobis,
-                                        odio quia quis, repudiandae sed sequi soluta temporibus vero voluptatum.</p>
+                                    <p class="description"><?= $product['description'] ?></p>
                                 </div>
 
                                 <div class="product-buy">
@@ -237,7 +307,7 @@
                                     </div>
 
                                     <p class="cat">
-                                        Category : <a href="#">Clothing</a>
+                                        Category : <a href="#"><?= $product['name'] ?></a>
                                     </p>
                                 </div>
                             </div>
@@ -265,10 +335,7 @@
                                             <div class="row">
                                                 <div class="col-12">
                                                     <div class="single-des">
-                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                                            Distinctio, eveniet ex id illo impedit magnam minus non,
-                                                            nostrum nulla pariatur, quaerat quam quas quis repellat
-                                                            repellendus temporibus totam ullam vero?</p>
+                                                        <p><?= $product['description'] ?></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -282,37 +349,39 @@
                                                     <div class="ratting-main">
                                                         <div class="avg-rating">
                                                             <h4>4.5 <span>Overall</span></h4>
-                                                            <span>Based on 1 Comments</span>
+                                                            <span>Based on <?= count($reviews) ?> Comments</span>
                                                         </div>
                                                     </div>
 
-                                                    <div class="single-rating">
-                                                        <div class="rating-author">
-                                                            <img src="https://wpthemesgrid.com/themes/eshop/images/comments1.jpg" alt="#">
-                                                        </div>
+                                                    <?php
+                                                        foreach ($reviews as $review) {
+                                                            ?>
+                                                                <div class="single-rating">
+                                                                    <div class="rating-author">
+                                                                        <img src="https://wpthemesgrid.com/themes/eshop/images/comments1.jpg" alt="#">
+                                                                    </div>
 
-                                                        <div class="rating-des">
-                                                            <h6>Лох капченый</h6>
+                                                                    <div class="rating-des">
+                                                                        <h6><?= $review['name'] ?></h6>
 
-                                                            <div class="ratings">
-                                                                <ul class="rating">
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    <li><i class="fa fa-star-half-o"></i></li>
-                                                                    <li><i class="fa fa-star-o"></i></li>
-                                                                </ul>
+                                                                        <div class="ratings">
+                                                                            <ul class="rating">
+                                                                                <li><i class="fa fa-star"></i></li>
+                                                                                <li><i class="fa fa-star"></i></li>
+                                                                                <li><i class="fa fa-star"></i></li>
+                                                                                <li><i class="fa fa-star-half-o"></i></li>
+                                                                                <li><i class="fa fa-star-o"></i></li>
+                                                                            </ul>
 
-                                                                <div class="rate-count">(<span>3.5</span>)</div>
-                                                            </div>
+                                                                            <div class="rate-count">(<span><?= $review['stars'] ?></span>)</div>
+                                                                        </div>
 
-                                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing
-                                                                elit. Aspernatur aut cum cupiditate doloremque explicabo
-                                                                maiores, nostrum quaerat quam quidem, similique,
-                                                                voluptate voluptatibus! Blanditiis commodi ducimus illo
-                                                                quaerat sequi. Esse, porro.</p>
-                                                        </div>
-                                                    </div>
+                                                                        <p><?= $review['message'] ?></p>
+                                                                    </div>
+                                                                </div>
+                                                            <?php
+                                                        }
+                                                    ?>
 
                                                     <div class="comment-review">
                                                         <div class="add-review">
@@ -337,20 +406,6 @@
 
                                                     <form class="form" method="post" action="#">
                                                         <div class="row">
-                                                            <div class="col-lg-6 col-12">
-                                                                <div class="form-group">
-                                                                    <label>Your Name <span>*</span></label>
-                                                                    <input type="text" name="name" required>
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-lg-6 col-12">
-                                                                <div class="form-group">
-                                                                    <label>Your Email <span>*</span></label>
-                                                                    <input type="email" name="email" required>
-                                                                </div>
-                                                            </div>
-
                                                             <div class="col-lg-12 col-12">
                                                                 <div class="form-group">
                                                                     <label>Write a review <span>*</span></label>

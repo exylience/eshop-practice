@@ -300,7 +300,7 @@ $products = mysqli_fetch_all($response, MYSQLI_ASSOC);
                                                                         <div class="col-xl-3 col-lg-4 col-md-4 col-12">
                                                                             <div class="single-product">
                                                                                 <div class="product-img">
-                                                                                    <a href="product-details.html">
+                                                                                    <a href="product-details.php?id=<?= $product['id'] ?>">
                                                                                         <?php
                                                                                             if (is_null($product['image_url'])) {
                                                                                                 ?>
