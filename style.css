@@ -2680,11 +2680,11 @@ Version:1.0
 	font-weight: 600;
 	line-height: 18px;
 }
-.shop.single .ratting-main .single-rating ul{}
-.shop.single .ratting-main .single-rating ul li{
+.shop.single .ratting-main .single-rating .rating-des .ratings ul{}
+.rating-des .ratings ul li{
 	display:inline-block;
 }
-.shop.single .ratting-main .single-rating ul li i{
+.rating-des .ratings ul li i{
 	color:#F7941D;
 	font-size:14px;
 }

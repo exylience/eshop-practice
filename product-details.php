@@ -250,40 +250,124 @@
                                 <div class="nav-main">
                                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                                         <li class="nav-item">
-                                            <a class="nav-link active" data-toggle="tab" href="#description" role="tab" aria-selected="true"></a>
+                                            <a class="nav-link active" data-toggle="tab" href="#description" role="tab" aria-selected="true">Description</a>
                                         </li>
 
                                         <li class="nav-item">
-                                            <a class="nav-link" data-toggle="tab" href="#reviews" role="tab" aria-selected="false"></a>
+                                            <a class="nav-link" data-toggle="tab" href="#reviews" role="tab" aria-selected="false">Reviews</a>
                                         </li>
                                     </ul>
                                 </div>
 
                                 <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane fade show active" id="description" role="tablist">
+                                        <div class="tab-single">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="single-des">
+                                                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+                                                            Distinctio, eveniet ex id illo impedit magnam minus non,
+                                                            nostrum nulla pariatur, quaerat quam quas quis repellat
+                                                            repellendus temporibus totam ullam vero?</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                                    <div class="tab-panel fade" id="reviews" role="tabpanel">
+                                        <div class="tab-single review-panel">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="ratting-main">
+                                                        <div class="avg-rating">
+                                                            <h4>4.5 <span>Overall</span></h4>
+                                                            <span>Based on 1 Comments</span>
+                                                        </div>
+                                                    </div>
 
-            <div class="row">
-                <div class="col-12">
-                    <div class="total-amount">
-                        <div class="row">
-                            <div class="col-lg-8 col-md-5 col-12">
-                                <div class="left"></div>
-                            </div>
+                                                    <div class="single-rating">
+                                                        <div class="rating-author">
+                                                            <img src="https://wpthemesgrid.com/themes/eshop/images/comments1.jpg" alt="#">
+                                                        </div>
 
-                            <div class="col-lg-4 col-md-7 col-12">
-                                <div class="right">
-                                    <ul>
-                                        <li class="last">You Pay<span>$310.00</span></li>
-                                    </ul>
-                                    <div class="button5">
-                                        <a href="#" class="btn">Checkout</a>
-                                        <a href="#" class="btn">Continue shopping</a>
+                                                        <div class="rating-des">
+                                                            <h6>Лох капченый</h6>
+
+                                                            <div class="ratings">
+                                                                <ul class="rating">
+                                                                    <li><i class="fa fa-star"></i></li>
+                                                                    <li><i class="fa fa-star"></i></li>
+                                                                    <li><i class="fa fa-star"></i></li>
+                                                                    <li><i class="fa fa-star-half-o"></i></li>
+                                                                    <li><i class="fa fa-star-o"></i></li>
+                                                                </ul>
+
+                                                                <div class="rate-count">(<span>3.5</span>)</div>
+                                                            </div>
+
+                                                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing
+                                                                elit. Aspernatur aut cum cupiditate doloremque explicabo
+                                                                maiores, nostrum quaerat quam quidem, similique,
+                                                                voluptate voluptatibus! Blanditiis commodi ducimus illo
+                                                                quaerat sequi. Esse, porro.</p>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="comment-review">
+                                                        <div class="add-review">
+                                                            <h5>Add A Review</h5>
+                                                            <p>Your email address will not be published. Required fields are marked</p>
+                                                        </div>
+
+                                                        <h4>Your Rating</h4>
+
+                                                        <div class="review-inner">
+                                                            <div class="ratings">
+                                                                <ul class="rating">
+                                                                    <li><i class="fa fa-star"></i></li>
+                                                                    <li><i class="fa fa-star"></i></li>
+                                                                    <li><i class="fa fa-star"></i></li>
+                                                                    <li><i class="fa fa-star"></i></li>
+                                                                    <li><i class="fa fa-star"></i></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <form class="form" method="post" action="#">
+                                                        <div class="row">
+                                                            <div class="col-lg-6 col-12">
+                                                                <div class="form-group">
+                                                                    <label>Your Name <span>*</span></label>
+                                                                    <input type="text" name="name" required>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-6 col-12">
+                                                                <div class="form-group">
+                                                                    <label>Your Email <span>*</span></label>
+                                                                    <input type="email" name="email" required>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-12 col-12">
+                                                                <div class="form-group">
+                                                                    <label>Write a review <span>*</span></label>
+                                                                    <textarea name="message" rows="6"></textarea>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-lg-12 col-12">
+                                                                <div class="form-group button5">
+                                                                    <button type="submit" class="btn">Submit</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
