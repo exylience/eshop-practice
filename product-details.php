@@ -33,14 +33,18 @@ if (mysqli_num_rows($response) > 0) {
 }
 
 $query = "SELECT 
-    `reviews`.`id`, `reviews`.`message`, `reviews`.`user_id`, `reviews`.`stars`,
-    `users`.`name`
+    `reviews`.`id`, `reviews`.`message`, `reviews`.`user_id`, `reviews`.`product_id`, `reviews`.`stars`,
+    `users`.`first_name`, `users`.`last_name`
     FROM `reviews`
     INNER JOIN `users`
     ON `reviews`.`user_id` = `users`.`id`
-    WHERE (`reviews`.`id` = '$id')";
+    WHERE (`reviews`.`product_id` = '$id')";
 $response = mysqli_query($db, $query);
 $reviews = mysqli_fetch_all($response, MYSQLI_ASSOC);
+
+$allStars = array_column($reviews, 'stars');
+$averageRating = count($allStars) === 0 ? 0 : array_sum($allStars) / count($allStars);
+
 ?>
 
 <!DOCTYPE html>
@@ -288,7 +292,7 @@ $reviews = mysqli_fetch_all($response, MYSQLI_ASSOC);
                                             <li class="dark"><i class="fa fa-star-o"></i></li>
                                         </ul>
 
-                                        <a href="#" class="total-review">(102) Review</a>
+                                        <a href="#" class="total-review">(<?= count($reviews) ?>) Review</a>
                                     </div>
 
                                     <p class="price">
@@ -348,7 +352,7 @@ $reviews = mysqli_fetch_all($response, MYSQLI_ASSOC);
                                                 <div class="col-12">
                                                     <div class="ratting-main">
                                                         <div class="avg-rating">
-                                                            <h4>4.5 <span>Overall</span></h4>
+                                                            <h4><?= $averageRating ?> <span>Overall</span></h4>
                                                             <span>Based on <?= count($reviews) ?> Comments</span>
                                                         </div>
                                                     </div>
@@ -362,7 +366,7 @@ $reviews = mysqli_fetch_all($response, MYSQLI_ASSOC);
                                                                     </div>
 
                                                                     <div class="rating-des">
-                                                                        <h6><?= $review['name'] ?></h6>
+                                                                        <h6><?= "{$review['first_name']} {$review['last_name']}" ?></h6>
 
                                                                         <div class="ratings">
                                                                             <ul class="rating">
@@ -383,44 +387,53 @@ $reviews = mysqli_fetch_all($response, MYSQLI_ASSOC);
                                                         }
                                                     ?>
 
-                                                    <div class="comment-review">
-                                                        <div class="add-review">
-                                                            <h5>Add A Review</h5>
-                                                            <p>Your email address will not be published. Required fields are marked</p>
-                                                        </div>
+                                                    <?php
+                                                        if (isset($_SESSION['user'])) {
+                                                            ?>
+                                                                <div class="comment-review">
+                                                                    <div class="add-review">
+                                                                        <h5>Add A Review</h5>
+                                                                        <p>Your email address will not be published. Required fields are marked</p>
+                                                                    </div>
 
-                                                        <h4>Your Rating</h4>
+                                                                    <h4>Your Rating</h4>
 
-                                                        <div class="review-inner">
-                                                            <div class="ratings">
-                                                                <ul class="rating">
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                    <li><i class="fa fa-star"></i></li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                                    <div class="review-inner">
+                                                                        <div class="ratings">
+                                                                            <ul class="rating">
+                                                                                <li><i class="fa fa-star"></i></li>
+                                                                                <li><i class="fa fa-star"></i></li>
+                                                                                <li><i class="fa fa-star"></i></li>
+                                                                                <li><i class="fa fa-star"></i></li>
+                                                                                <li><i class="fa fa-star"></i></li>
+                                                                            </ul>
 
-                                                    <form class="form" method="post" action="#">
-                                                        <div class="row">
-                                                            <div class="col-lg-12 col-12">
-                                                                <div class="form-group">
-                                                                    <label>Write a review <span>*</span></label>
-                                                                    <textarea name="message" rows="6"></textarea>
+                                                                            <input type="hidden" name="stars" value="5">
+                                                                        </div>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
 
-                                                            <div class="col-lg-12 col-12">
-                                                                <div class="form-group button5">
-                                                                    <button type="submit" class="btn">Submit</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </form>
-                                                </div>
+                                                                <form class="form" method="post" action="#">
+                                                                    <div class="row">
+                                                                        <div class="col-lg-12 col-12">
+                                                                            <div class="form-group">
+                                                                                <label>Write a review <span>*</span></label>
+                                                                                <textarea name="message" rows="6"></textarea>
+                                                                                <input type="hidden" name="user_id" value="<?= $_SESSION['user']['id'] ?>">
+                                                                                <input type="hidden" name="product_id" value="<?= $id ?>">
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="col-lg-12 col-12">
+                                                                            <div class="form-group button5">
+                                                                                <button type="submit" class="btn">Submit</button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            <?php
+                                                        }
+                                                    ?>
                                             </div>
                                         </div>
                                     </div>
@@ -520,5 +533,9 @@ $reviews = mysqli_fetch_all($response, MYSQLI_ASSOC);
     <script src="js/easing.js"></script>
     <!-- Active JS -->
     <script src="js/active.js"></script>
+
+    <script>
+
+    </script>
 </body>
 </html>
